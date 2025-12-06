@@ -1,0 +1,36 @@
+.input-box-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  gap: 12px;
+}
+
+.input-box {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+}
+
+.send-btn {
+  background: #2563eb;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.send-btn.disabled,
+.send-btn:disabled {
+  background: #cbd5e1 !important;
+  cursor: not-allowed !important;
+  color: #ffffff;
+}
