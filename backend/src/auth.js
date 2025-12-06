@@ -24,22 +24,43 @@ router.post("/signup", async (req, res) => {
 
 // ---------------- LOGIN ----------------
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) return res.json({ success: false, msg: "User not found" });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.json({ success: false, msg: "User not found" });
+    }
 
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return res.json({ success: false, msg: "Invalid password" });
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.json({ success: false, msg: "Invalid password" });
+    }
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    if (!process.env.JWT_SECRET) {
+      return res.json({ success: false, msg: "JWT_SECRET missing" });
+    }
 
-  res.json({
-    success: true,
-    msg: "Login successful",
-    token,
-    user: { _id: user._id, name: user.name, email: user.email },
-  });
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      success: true,
+      msg: "Login successful",
+      token,
+      user: { _id: user._id, name: user.name, email: user.email },
+    });
+
+  } catch (error) {
+    console.error("Login error:", error.message);
+    res.status(500).json({
+      success: false,
+      msg: "Server error during login",
+      error: error.message,
+    });
+  }
 });
-
 export default router;
