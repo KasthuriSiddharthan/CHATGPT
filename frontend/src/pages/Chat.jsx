@@ -242,14 +242,14 @@ export default function Chat() {
         </div>
 
         <button
-          className="logout-btn"
-          onClick={() => {
-            localStorage.removeItem("token");
-            window.location.href = "/login";
-          }}
-        >
-          Logout
-        </button>
+  className="logout-btn"
+  onClick={() => {
+    localStorage.clear();   
+    window.location.replace("/login");
+  }}
+>
+  Logout
+</button>
       </div>
 
       {/* MAIN CHAT */}
